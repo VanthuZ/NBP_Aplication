@@ -5,7 +5,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 
-public class InformationAboutCurrency {
+public class InfoAboutCurrencyController {
 
     @FXML
     ChoiceBox choiceBoxCurrency;
@@ -23,4 +23,7 @@ public class InformationAboutCurrency {
     DatePicker dpFromDay;
     @FXML
     DatePicker dpToDay;
+
+
+
 }
