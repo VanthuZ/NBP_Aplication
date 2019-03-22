@@ -1,4 +1,4 @@
-package NBPApp.Model;
+package NBPApp.Model.Currency;
 
 
 import lombok.Data;
@@ -11,5 +11,5 @@ public class ExchangeRatesSeries {
     private char Table;
     private String Currency;
     private String Code;
-    private List<Rates> rates;
+    private List<RatesCurrency> rates;
 }

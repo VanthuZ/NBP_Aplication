@@ -1,9 +1,9 @@
-package NBPApp.Model;
+package NBPApp.Model.Currency;
 
 import lombok.Data;
 
 @Data
-public class Rates {
+public class RatesCurrency {
     private String no;
     private String effectiveDate;
     private float bid;
