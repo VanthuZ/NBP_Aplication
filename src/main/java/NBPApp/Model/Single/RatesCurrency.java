@@ -1,4 +1,4 @@
-package NBPApp.Model.Currency;
+package NBPApp.Model.Single;
 
 import lombok.Data;
 
