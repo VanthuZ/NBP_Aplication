@@ -2,20 +2,22 @@ package NBPApp.Controller;
 
 import NBPApp.Services.InfoAboutCurrencyServices;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
+import lombok.Data;
 
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+@Data
 public class InfoAboutCurrencyController implements Initializable {
 
+    @FXML
+    TextArea taResults;
     @FXML
     ChoiceBox choiceBoxCurrency;
     @FXML
@@ -36,6 +38,8 @@ public class InfoAboutCurrencyController implements Initializable {
     Label lbFrom;
     @FXML
     Label lbTo;
+    @FXML
+    Button btGenerateData;
 
     InfoAboutCurrencyServices infoAboutCurrencyServices = new InfoAboutCurrencyServices();
 
@@ -44,6 +48,7 @@ public class InfoAboutCurrencyController implements Initializable {
         setVisibilityForElements();
         setOptionInChoiceBoxCurrency();
         setOptionInChoiceBoxDataType();
+
     }
 
     private void setVisibilityForElements(){
@@ -64,6 +69,12 @@ public class InfoAboutCurrencyController implements Initializable {
 
 
 
+    public void generateData() {
+        if(cbFromToDay.isSelected()){
+            taResults.setText(infoAboutCurrencyServices.getInformationSingleCurrenyManyRecords(this));
+        }else{
+            taResults.setText(infoAboutCurrencyServices.getInformationAboutSingleCurrencyOneRecord(this));
+        }
 
-
+    }
 }
