@@ -36,11 +36,18 @@ public class InfoAboutCurrencyController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        setVisibilityForElements();
+
+    }
+
+    private void setVisibilityForElements(){
         dpSelectedDay.visibleProperty().bind(cbSelectedDay.selectedProperty());
         dpFromDay.visibleProperty().bind(cbFromToDay.selectedProperty());
         dpToDay.visibleProperty().bind(cbFromToDay.selectedProperty());
         lbFrom.visibleProperty().bind(cbFromToDay.selectedProperty());
         lbTo.visibleProperty().bind(cbFromToDay.selectedProperty());
-
     }
+
+
+
 }
