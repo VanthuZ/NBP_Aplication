@@ -1,5 +1,7 @@
 package NBPApp.Controller;
 
+import NBPApp.Services.InfoAboutCurrencyServices;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.CheckBox;
@@ -8,6 +10,8 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class InfoAboutCurrencyController implements Initializable {
@@ -33,11 +37,13 @@ public class InfoAboutCurrencyController implements Initializable {
     @FXML
     Label lbTo;
 
+    InfoAboutCurrencyServices infoAboutCurrencyServices = new InfoAboutCurrencyServices();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setVisibilityForElements();
-
+        setOptionInChoiceBoxCurrency();
+        setOptionInChoiceBoxDataType();
     }
 
     private void setVisibilityForElements(){
@@ -47,6 +53,16 @@ public class InfoAboutCurrencyController implements Initializable {
         lbFrom.visibleProperty().bind(cbFromToDay.selectedProperty());
         lbTo.visibleProperty().bind(cbFromToDay.selectedProperty());
     }
+
+    private void setOptionInChoiceBoxCurrency(){
+        choiceBoxCurrency.setItems(FXCollections.observableArrayList(infoAboutCurrencyServices.getCurenncies()));
+    }
+
+    private void setOptionInChoiceBoxDataType(){
+        choiceBoxDataType.setItems(FXCollections.observableArrayList("Kurs średni", "Cena zakupu i sprzedaży"));
+    }
+
+
 
 
 
