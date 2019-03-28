@@ -8,10 +8,11 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NBPApp.Controller.InfoAboutCurrencyController">
   <children>
@@ -27,57 +28,67 @@
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
       <children>
-            <ChoiceBox fx:id="choiceBoxCurrency" layoutX="14.0" layoutY="34.0" prefHeight="25.0" prefWidth="174.0" />
-            <Label layoutX="19.0" layoutY="14.0" text="Wybierz walute">
+            <ChoiceBox fx:id="choiceBoxCurrency" layoutX="15.0" layoutY="35.0" prefHeight="25.0" prefWidth="174.0" />
+            <Label layoutX="15.0" layoutY="14.0" text="Wybierz walute">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <ChoiceBox fx:id="choiceBoxDataType" layoutX="14.0" layoutY="97.0" prefHeight="25.0" prefWidth="174.0" />
-            <Label layoutX="20.0" layoutY="77.0" text="Wybierz typ danych">
+            <ChoiceBox fx:id="choiceBoxDataType" layoutX="15.0" layoutY="90.0" prefHeight="25.0" prefWidth="174.0" />
+            <Label layoutX="15.0" layoutY="70.0" prefHeight="20.0" prefWidth="174.0" text="Wybierz typ danych">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <Label layoutX="14.0" layoutY="167.0" text="Wybierz typ daty">
+            <Label layoutX="15.0" layoutY="140.0" text="Wybierz typ daty">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Label>
-            <CheckBox fx:id="cbToday" layoutX="14.0" layoutY="196.0" mnemonicParsing="false" text="Dziś">
+            <CheckBox fx:id="cbToday" layoutX="15.0" layoutY="160.0" mnemonicParsing="false" text="Dziś">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="cbSelectedDay" layoutX="14.0" layoutY="229.0" mnemonicParsing="false" text="Z wybranego dnia">
+            <CheckBox fx:id="cbSelectedDay" layoutX="15.0" layoutY="190.0" mnemonicParsing="false" text="Z wybranego dnia">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </CheckBox>
-            <CheckBox fx:id="cbFromToDay" layoutX="14.0" layoutY="262.0" mnemonicParsing="false" text="Z danego zakresu dat">
+            <CheckBox fx:id="cbFromToDay" layoutX="15.0" layoutY="220.0" mnemonicParsing="false" text="Z danego zakresu dat">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </CheckBox>
-            <TextArea fx:id="taResults" layoutX="320.0" layoutY="2.0" prefHeight="368.0" prefWidth="319.0" />
-            <DatePicker fx:id="dpSelectedDay" layoutX="145.0" layoutY="225.0" />
-            <DatePicker fx:id="dpFromDay" layoutX="58.0" layoutY="296.0" />
-            <DatePicker fx:id="dpToDay" layoutX="58.0" layoutY="336.0" />
-            <Label fx:id="lbFrom" layoutX="14.0" layoutY="300.0" text="Od">
+            <DatePicker fx:id="dpSelectedDay" layoutX="145.0" layoutY="185.0" />
+            <DatePicker fx:id="dpFromDay" layoutX="60.0" layoutY="245.0" />
+            <DatePicker fx:id="dpToDay" layoutX="60.0" layoutY="275.0" />
+            <Label fx:id="lbFrom" layoutX="15.0" layoutY="250.0" text="Od">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Label fx:id="lbTo" layoutX="14.0" layoutY="340.0" text="Do">
+            <Label fx:id="lbTo" layoutX="15.0" layoutY="280.0" text="Do">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Label>
-            <Button fx:id="btGenerateData" onAction="#generateData" layoutX="244.0" layoutY="332.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="66.0" text="Generuj">
+            <Button fx:id="btGenerateData" layoutX="240.0" layoutY="330.0" mnemonicParsing="false" onAction="#generateData" prefHeight="31.0" prefWidth="66.0" text="Generuj">
                <font>
                   <Font name="System Bold" size="12.0" />
                </font>
             </Button>
+
+            <Button fx:id="btClearData" layoutX="160.0" layoutY="330.0" mnemonicParsing="false" onAction="#clearData" prefHeight="31.0" prefWidth="66.0" text="Czyść">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
+            <ScrollPane layoutX="320.0" layoutY="3.0" prefHeight="369.0" prefWidth="321.0">
+               <content>
+                  <TextFlow fx:id="tfTextInformation" prefHeight="359.0" prefWidth="309.0" />
+               </content>
+            </ScrollPane>
       </children>
     </AnchorPane>
   </children>

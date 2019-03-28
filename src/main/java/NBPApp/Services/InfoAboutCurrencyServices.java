@@ -7,7 +7,10 @@ import NBPApp.Model.Single.RatesCurrency;
 import NBPApp.Model.Table.ExchangeRatesTable;
 import NBPApp.Model.Table.RatesTable;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -15,6 +18,11 @@ import java.util.List;
 
 public class InfoAboutCurrencyServices {
 
+    Text header;
+    Text nameCurrency;
+    Text avgRate;
+    Text askRate;
+    Text bidRate;
 
 
     public ExchangeRatesTable[] createTableObjectFromGivenUrl(String givenUrl){
@@ -62,7 +70,7 @@ public class InfoAboutCurrencyServices {
         String dataType = "";
         if(controller.getChoiceBoxDataType().getValue().equals("Kurs średni")){
             dataType = "a";
-        }else if(controller.getChoiceBoxDataType().getValue().equals("Cena zakupu i sprzedaży")){
+        }else if(controller.getChoiceBoxDataType().getValue().equals("Cena zakupu i sprzedaży")) {
             dataType = "c";
         }
 
@@ -80,29 +88,71 @@ public class InfoAboutCurrencyServices {
         return url;
     }
 
-    public String getInformationAboutSingleCurrencyOneRecord(InfoAboutCurrencyController controller){
-        ExchangeRatesSeries singleCurrency = createSingleObjectFromGivenUrl(getUrlForSingleCurrency(controller));
-        String data;
-        data = "Tabela nr " + singleCurrency.getRates().get(0).getNo() + " z dnia " + singleCurrency.getRates().get(0).getEffectiveDate()
-            + "\nNazwa waluty\tKod waluty\tKurs średni"
-                +"\n" + singleCurrency.getCurrency() + "\t" + singleCurrency.getCode() + "\t" + singleCurrency.getRates().get(0).getMid();
-        return data;
+    public void setTextsProperties(){
+        header = new Text();
+        header.setStyle("-fx-font-weight: bold;");
+        header.setFill(Color.RED);
+
+        nameCurrency = new Text();
+        nameCurrency.setStyle("-fx-font-weight: bold;");
+        nameCurrency.setFill(Color.GREEN);
+
+        avgRate = new Text();
+        avgRate.setStyle("-fx-font-weight: bold;");
+        avgRate.setFill(Color.GREEN);
+
+        bidRate = new Text();
+        bidRate.setStyle("-fx-font-weight: bold;");
+        bidRate.setFill(Color.GREEN);
+
+        askRate = new Text();
+        askRate.setStyle("-fx-font-weight: bold;");
+        askRate.setFill(Color.GREEN);
     }
 
-    public String getInformationSingleCurrenyManyRecords(InfoAboutCurrencyController controller){
+
+    public void getInformationAboutSingleCurrencyOneRecord(InfoAboutCurrencyController controller){
         ExchangeRatesSeries singleCurrency = createSingleObjectFromGivenUrl(getUrlForSingleCurrency(controller));
-        String data;
+        setTextsProperties();
 
-        data = "Informacje dla waluty " + controller.getChoiceBoxCurrency().getValue().toString()
-                + " z okresu " + controller.getDpFromDay().getValue().toString()  + " - " + controller.getDpToDay().getValue().toString() + "\n";
+        header.setText("\n\n Tabela nr " + singleCurrency.getRates().get(0).getNo() + " z dnia " + singleCurrency.getRates().get(0).getEffectiveDate());
+        nameCurrency.setText("\n\n Nazwa waluty\n" + " " + singleCurrency.getCurrency());
 
-        for(RatesCurrency currency : singleCurrency.getRates()){
-            data += "\nTabela nr " +currency.getNo() + " z dnia " + currency.getEffectiveDate()
-                    + "\nKurs: " + currency.getMid();
+        controller.getTfTextInformation().getChildren().add(header);
+        controller.getTfTextInformation().getChildren().add(nameCurrency);
+
+        if(controller.getChoiceBoxDataType().getValue().equals("Kurs średni")){
+            avgRate.setText("\n\n Kurs średni\n" + " " + singleCurrency.getRates().get(0).getMid());
+            controller.getTfTextInformation().getChildren().add(avgRate);
+        }else{
+            bidRate.setText("\n\n Cena kupna\n" + " " + singleCurrency.getRates().get(0).getBid());
+            askRate.setText("\n\n Cena sprzdaży\n" + " " + singleCurrency.getRates().get(0).getAsk());
+            controller.getTfTextInformation().getChildren().add(bidRate);
+            controller.getTfTextInformation().getChildren().add(askRate);
         }
 
-        return data;
+
+
     }
+
+    public void getInformationSingleCurrencyManyRecords(InfoAboutCurrencyController controller){
+        ExchangeRatesSeries singleCurrency = createSingleObjectFromGivenUrl(getUrlForSingleCurrency(controller));
+        String tmpAvgRate ="";
+        setTextsProperties();
+
+        header.setText("\n\n Informacje dla waluty " + controller.getChoiceBoxCurrency().getValue().toString()
+                + "\n z okresu " + controller.getDpFromDay().getValue().toString()  + " - " + controller.getDpToDay().getValue().toString() + "\n");
+        controller.getTfTextInformation().getChildren().add(header);
+
+        for(RatesCurrency currency : singleCurrency.getRates()){
+            tmpAvgRate += "\n Tabela nr " +currency.getNo() + " z dnia " + currency.getEffectiveDate()
+                    + "\n Kurs: " + " " +  currency.getMid() + "\n";
+        }
+        avgRate.setText(tmpAvgRate);
+        controller.getTfTextInformation().getChildren().add(avgRate);
+    }
+
+
 
 
 }
