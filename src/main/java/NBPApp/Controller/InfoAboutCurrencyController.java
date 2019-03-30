@@ -1,12 +1,15 @@
 package NBPApp.Controller;
 
 import NBPApp.Services.InfoAboutCurrencyServices;
+import com.fasterxml.jackson.core.io.JsonEOFException;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
 import lombok.Data;
+
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -68,10 +71,17 @@ public class InfoAboutCurrencyController implements Initializable {
     }
 
     public void generateData() {
-        if(cbFromToDay.isSelected()){
-           infoAboutCurrencyServices.getInformationSingleCurrencyManyRecords(this);
-        }else{
-           infoAboutCurrencyServices.getInformationAboutSingleCurrencyOneRecord(this);
+        try {
+            if (cbFromToDay.isSelected()) {
+                infoAboutCurrencyServices.getInformationSingleCurrencyManyRecords(this);
+            } else {
+                infoAboutCurrencyServices.getInformationAboutSingleCurrencyOneRecord(this);
+            }
+        }catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.NONE, "Brak danych dla wybranej walutu i typu danych");
+            alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            alert.setTitle("Informacja");
+            alert.show();
         }
     }
 

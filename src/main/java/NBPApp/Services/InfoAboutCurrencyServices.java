@@ -7,14 +7,22 @@ import NBPApp.Model.Single.RatesCurrency;
 import NBPApp.Model.Table.ExchangeRatesTable;
 import NBPApp.Model.Table.RatesTable;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import java.io.IOException;
 import java.net.URL;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjuster;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+
 
 public class InfoAboutCurrencyServices {
 
@@ -48,7 +56,6 @@ public class InfoAboutCurrencyServices {
             ExchangeRatesSeries = objectMapper.readValue(jsonUrl, ExchangeRatesSeries.class);
             return ExchangeRatesSeries;
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -79,14 +86,37 @@ public class InfoAboutCurrencyServices {
         currency = currency.substring(1,4);
 
         String date = "";
-        if(controller.getCbToday().isSelected()) date = "today";
-        if(controller.getCbSelectedDay().isSelected()) date = controller.getDpSelectedDay().getValue().toString();
+        LocalDate today = LocalDate.now();
+        if(controller.getCbToday().isSelected()){
+            if(today.getDayOfWeek().toString().equals("SATURDAY") || today.getDayOfWeek().toString().equals("SUNDAY")){
+                LocalDate previousFriday = today.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY ));
+                date = previousFriday.toString();
+            }else{
+                date = "today";
+            }
+        }
+        if(controller.getCbSelectedDay().isSelected()) {
+            checkWeekendSelected(controller);
+            date = controller.getDpSelectedDay().getValue().toString();
+        }
         if(controller.getCbFromToDay().isSelected()) date = controller.getDpFromDay().getValue().toString() + "/" + controller.getDpToDay().getValue().toString();
 
         String url = "http://api.nbp.pl/api/exchangerates/rates/";
         url += String.format("%s/%s/%s", dataType, currency, date);
         return url;
     }
+
+    private void checkWeekendSelected(InfoAboutCurrencyController controller){
+        String tmpSelectedDayDate;
+        tmpSelectedDayDate = controller.getDpSelectedDay().getValue().toString();
+        if(LocalDate.parse(tmpSelectedDayDate).getDayOfWeek().toString().equals("SATURDAY")
+                || LocalDate.parse(tmpSelectedDayDate).getDayOfWeek().toString().equals("SUNDAY")){
+            Alert alert = new Alert(Alert.AlertType.NONE, "Tabele nie są generowane w weeekend! \nWybierz dzień w tygodniu.");
+            alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
+            alert.show();
+        }
+    }
+
 
     public void setTextsProperties(){
         header = new Text();
@@ -130,9 +160,6 @@ public class InfoAboutCurrencyServices {
             controller.getTfTextInformation().getChildren().add(bidRate);
             controller.getTfTextInformation().getChildren().add(askRate);
         }
-
-
-
     }
 
     public void getInformationSingleCurrencyManyRecords(InfoAboutCurrencyController controller){
