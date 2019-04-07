@@ -10,15 +10,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.TemporalAdjuster;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -77,36 +73,37 @@ public class InfoAboutCurrencyServices {
         String dataType = "";
         if(controller.getChoiceBoxDataType().getValue().equals("Kurs średni")){
             dataType = "a";
-        }else if(controller.getChoiceBoxDataType().getValue().equals("Cena zakupu i sprzedaży")) {
+        }else if(controller.getChoiceBoxDataType().getValue().equals("Cena zakupu i sprzedaży")){
             dataType = "c";
         }
 
         String currency;
         currency = controller.getChoiceBoxCurrency().getValue().toString();
-        currency = currency.substring(1,4);
+        currency = currency.substring(1, 4);
 
         String date = "";
         LocalDate today = LocalDate.now();
         if(controller.getCbToday().isSelected()){
             if(today.getDayOfWeek().toString().equals("SATURDAY") || today.getDayOfWeek().toString().equals("SUNDAY")){
-                LocalDate previousFriday = today.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY ));
+                LocalDate previousFriday = today.with(TemporalAdjusters.previous(DayOfWeek.FRIDAY));
                 date = previousFriday.toString();
             }else{
                 date = "today";
             }
         }
-        if(controller.getCbSelectedDay().isSelected()) {
+        if(controller.getCbSelectedDay().isSelected()){
             checkWeekendSelected(controller);
             date = controller.getDpSelectedDay().getValue().toString();
         }
-        if(controller.getCbFromToDay().isSelected()) date = controller.getDpFromDay().getValue().toString() + "/" + controller.getDpToDay().getValue().toString();
+        if(controller.getCbFromToDay().isSelected())
+            date = controller.getDpFromDay().getValue().toString() + "/" + controller.getDpToDay().getValue().toString();
 
         String url = "http://api.nbp.pl/api/exchangerates/rates/";
         url += String.format("%s/%s/%s", dataType, currency, date);
         return url;
     }
 
-    private void checkWeekendSelected(InfoAboutCurrencyController controller){
+    private void checkWeekendSelected(InfoAboutCurrencyController controller) {
         String tmpSelectedDayDate;
         tmpSelectedDayDate = controller.getDpSelectedDay().getValue().toString();
         if(LocalDate.parse(tmpSelectedDayDate).getDayOfWeek().toString().equals("SATURDAY")
@@ -118,7 +115,7 @@ public class InfoAboutCurrencyServices {
     }
 
 
-    public void setTextsProperties(){
+    public void setTextsProperties() {
         header = new Text();
         header.setStyle("-fx-font-weight: bold;");
         header.setFill(Color.RED);
@@ -141,7 +138,7 @@ public class InfoAboutCurrencyServices {
     }
 
 
-    public void getInformationAboutSingleCurrencyOneRecord(InfoAboutCurrencyController controller){
+    public void getInformationAboutSingleCurrencyOneRecord(InfoAboutCurrencyController controller) {
         ExchangeRatesSeries singleCurrency = createSingleObjectFromGivenUrl(getUrlForSingleCurrency(controller));
         setTextsProperties();
 
@@ -164,22 +161,18 @@ public class InfoAboutCurrencyServices {
 
     public void getInformationSingleCurrencyManyRecords(InfoAboutCurrencyController controller){
         ExchangeRatesSeries singleCurrency = createSingleObjectFromGivenUrl(getUrlForSingleCurrency(controller));
-        String tmpAvgRate ="";
+        String tmpAvgRate = "";
         setTextsProperties();
 
         header.setText("\n\n Informacje dla waluty " + controller.getChoiceBoxCurrency().getValue().toString()
-                + "\n z okresu " + controller.getDpFromDay().getValue().toString()  + " - " + controller.getDpToDay().getValue().toString() + "\n");
+                + "\n z okresu " + controller.getDpFromDay().getValue().toString() + " - " + controller.getDpToDay().getValue().toString() + "\n");
         controller.getTfTextInformation().getChildren().add(header);
 
-        for(RatesCurrency currency : singleCurrency.getRates()){
-            tmpAvgRate += "\n Tabela nr " +currency.getNo() + " z dnia " + currency.getEffectiveDate()
-                    + "\n Kurs: " + " " +  currency.getMid() + "\n";
+        for (RatesCurrency currency : singleCurrency.getRates()) {
+            tmpAvgRate += "\n Tabela nr " + currency.getNo() + " z dnia " + currency.getEffectiveDate()
+                    + "\n Kurs: " + " " + currency.getMid() + "\n";
         }
         avgRate.setText(tmpAvgRate);
         controller.getTfTextInformation().getChildren().add(avgRate);
     }
-
-
-
-
 }

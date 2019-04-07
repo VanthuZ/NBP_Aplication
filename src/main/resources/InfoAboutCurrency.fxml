@@ -24,6 +24,12 @@
             <MenuItem mnemonicParsing="false" text="Konwerter walut" />
           </items>
         </Menu>
+            <Menu mnemonicParsing="false" text="Narzędzia">
+              <items>
+                <MenuItem fx:id="menuSave" onAction="#saveToFile" mnemonicParsing="false" text="Zapisz" />
+                  <MenuItem mnemonicParsing="false" text="Drukuj" />
+              </items>
+            </Menu>
       </menus>
     </MenuBar>
     <AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="-1.0" prefWidth="-1.0" VBox.vgrow="ALWAYS">
