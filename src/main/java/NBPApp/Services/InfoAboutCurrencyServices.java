@@ -11,6 +11,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
 import java.io.IOException;
 import java.net.URL;
 import java.time.DayOfWeek;
@@ -174,5 +176,13 @@ public class InfoAboutCurrencyServices {
         }
         avgRate.setText(tmpAvgRate);
         controller.getTfTextInformation().getChildren().add(avgRate);
+    }
+
+    public String getTextFromTextFlow(TextFlow textFlow){
+        StringBuilder stringBuilder = new StringBuilder();
+        textFlow.getChildren().stream()
+                .filter(t -> Text.class.equals(t.getClass()))
+                .forEach(t -> stringBuilder.append(((Text) t).getText() + String.format("%n")));
+        return  stringBuilder.toString();
     }
 }

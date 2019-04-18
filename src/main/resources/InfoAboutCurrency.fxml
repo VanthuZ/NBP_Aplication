@@ -27,7 +27,7 @@
             <Menu mnemonicParsing="false" text="Narzędzia">
               <items>
                 <MenuItem fx:id="menuSave" onAction="#saveToFile" mnemonicParsing="false" text="Zapisz" />
-                  <MenuItem mnemonicParsing="false" text="Drukuj" />
+                  <MenuItem fx:id="menuPrint" onAction="#sendToPrinter" mnemonicParsing="false" text="Drukuj" />
               </items>
             </Menu>
       </menus>

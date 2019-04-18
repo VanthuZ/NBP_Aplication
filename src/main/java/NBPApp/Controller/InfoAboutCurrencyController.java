@@ -2,20 +2,16 @@ package NBPApp.Controller;
 
 import NBPApp.Services.InfoAboutCurrencyServices;
 import NBPApp.Services.SaveToFile;
-import NBPApp.View.InfoAboutCurrencyView;
+import NBPApp.Services.SendToPrinter;
 import javafx.collections.FXCollections;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.text.TextFlow;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.Window;
 import lombok.Data;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -53,6 +49,7 @@ public class InfoAboutCurrencyController implements Initializable {
 
     InfoAboutCurrencyServices infoAboutCurrencyServices = new InfoAboutCurrencyServices();
     SaveToFile saveToFile = new SaveToFile();
+    SendToPrinter sendToPrinter = new SendToPrinter();
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -107,8 +104,12 @@ public class InfoAboutCurrencyController implements Initializable {
         File file = fileChooser.showSaveDialog(tfTextInformation.getScene().getWindow());
 
         if(file != null){
-            saveToFile.SaveFile(saveToFile.getTextFromTextFlow(tfTextInformation), file);
+            saveToFile.saveFile(infoAboutCurrencyServices.getTextFromTextFlow(tfTextInformation), file);
         }
     }
+
+    public void sendToPrinter() {
+        sendToPrinter.print(tfTextInformation);
     }
+}
 
