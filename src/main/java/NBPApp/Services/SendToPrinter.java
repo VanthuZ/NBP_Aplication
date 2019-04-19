@@ -1,9 +1,12 @@
 package NBPApp.Services;
 
+import javafx.print.JobSettings;
 import javafx.print.PageLayout;
+import javafx.print.PageRange;
 import javafx.print.PrinterJob;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -13,21 +16,17 @@ public class SendToPrinter {
 
     public void print(TextFlow textFlow) {
 
-        TextFlow printArea = new TextFlow(new Text(services.getTextFromTextFlow(textFlow)));
+        Text printArea = new Text(services.getTextFromTextFlow(textFlow));
         PrinterJob printerJob = PrinterJob.createPrinterJob();
 
-        Alert alert = new Alert(Alert.AlertType.NONE, "Polecenie druku zostało wysłane do drukarki");
-        alert.getDialogPane().getButtonTypes().add(ButtonType.OK);
-        alert.setTitle("Informacja");
+        Font font = new Font("Monospaced Regular", 12.0);
+        printArea.setFont(font);
 
-        if (printerJob != null) {
-            PageLayout pageLayout = printerJob.getJobSettings().getPageLayout();
-            printArea.setMaxHeight(pageLayout.getPrintableWidth());
-            alert.show();
-        }
+        printerJob.getJobSettings().setPageRanges(new PageRange(1, 1));
+        printerJob.showPrintDialog(null);
+        printerJob.printPage(printArea);
+        printerJob.endJob();
 
-        if (printerJob.printPage(printArea)) {
-            printerJob.endJob();
-        }
     }
 }
+
